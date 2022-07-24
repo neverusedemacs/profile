@@ -58,7 +58,7 @@ resource "aws_s3_object" "profile_html" {
 }
 
 resource "aws_s3_object" "profile_css" {
-  for_each = fileset(path.module, "source/css/*" )
+  for_each     = fileset(path.module, "source/css/*")
   bucket       = aws_s3_bucket.profile.bucket
   key          = trim(each.value, "source/")
   source       = each.value
@@ -67,7 +67,7 @@ resource "aws_s3_object" "profile_css" {
 }
 
 resource "aws_s3_object" "profile_js" {
-  for_each = fileset(path.module, "source/js/*" )
+  for_each     = fileset(path.module, "source/js/*")
   bucket       = aws_s3_bucket.profile.bucket
   key          = trim(each.value, "source/")
   source       = each.value
@@ -99,7 +99,7 @@ resource "aws_s3_object" "profile_src" {
   source_hash = filemd5(each.value)
   content_type = lookup(
     {
-      "js"         = "text/javascript"
+      "js" = "text/javascript"
     },
     split(".", each.value)[1],
   "text/plain")
