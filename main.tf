@@ -52,34 +52,34 @@ resource "aws_s3_bucket_policy" "profile" {
 resource "aws_s3_object" "profile_html" {
   bucket       = aws_s3_bucket.profile.bucket
   key          = "index.html"
-  source       = "source/index.html"
+  source       = "ak/index.html"
   content_type = "text/html"
-  source_hash  = filemd5("source/index.html")
+  source_hash  = filemd5("ak/index.html")
 }
 
 resource "aws_s3_object" "profile_css" {
-  for_each     = fileset(path.module, "source/css/*")
+  for_each     = fileset(path.module, "ak/css/*")
   bucket       = aws_s3_bucket.profile.bucket
-  key          = trim(each.value, "source/")
+  key          = trim(each.value, "ak/")
   source       = each.value
   content_type = "text/css"
   source_hash  = filemd5(each.value)
 }
 
 resource "aws_s3_object" "profile_js" {
-  for_each     = fileset(path.module, "source/js/*")
+  for_each     = fileset(path.module, "ak/js/*")
   bucket       = aws_s3_bucket.profile.bucket
-  key          = trim(each.value, "source/")
+  key          = trim(each.value, "ak/")
   source       = each.value
   content_type = "text/javascript"
   source_hash  = filemd5(each.value)
 }
 
 resource "aws_s3_object" "profile_assets" {
-  for_each    = fileset(path.module, "source/img/assets/*")
+  for_each    = fileset(path.module, "ak/img/assets/*")
   source      = each.value
   bucket      = aws_s3_bucket.profile.bucket
-  key         = trim(each.value, "source/")
+  key         = trim(each.value, "ak/")
   source_hash = filemd5(each.value)
   content_type = lookup(
     {
@@ -92,10 +92,10 @@ resource "aws_s3_object" "profile_assets" {
 }
 
 resource "aws_s3_object" "profile_src" {
-  for_each    = fileset(path.module, "source/src/*")
+  for_each    = fileset(path.module, "ak/src/*")
   source      = each.value
   bucket      = aws_s3_bucket.profile.bucket
-  key         = trim(each.value, "source/")
+  key         = trim(each.value, "ak/")
   source_hash = filemd5(each.value)
   content_type = lookup(
     {
