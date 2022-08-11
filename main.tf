@@ -96,7 +96,8 @@ resource "aws_s3_object" "profile_gpg" {
   bucket       = aws_s3_bucket.profile.bucket
   key          = trim(each.value, "ak/")
   source       = each.value
-  content_type = "text/plain"
+  content_type = "application/octet-stream"
+  content_disposition = "attachment; filename='patrick.asc'"
   source_hash  = filemd5(each.value)
 }
 
