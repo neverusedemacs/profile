@@ -92,13 +92,13 @@ resource "aws_s3_object" "profile_assets" {
 }
 
 resource "aws_s3_object" "profile_gpg" {
-  for_each     = fileset(path.module, "ak/files/*")
-  bucket       = aws_s3_bucket.profile.bucket
-  key          = trim(each.value, "ak/")
-  source       = each.value
-  content_type = "application/octet-stream"
+  for_each            = fileset(path.module, "ak/files/*")
+  bucket              = aws_s3_bucket.profile.bucket
+  key                 = trim(each.value, "ak/")
+  source              = each.value
+  content_type        = "application/octet-stream"
   content_disposition = "attachment; filename='patrick.asc'"
-  source_hash  = filemd5(each.value)
+  source_hash         = filemd5(each.value)
 }
 
 resource "aws_s3_object" "profile_src" {
