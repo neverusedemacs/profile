@@ -16,12 +16,12 @@ data "aws_iam_policy_document" "profile" {
       identifiers = ["*"]
       type        = "*"
     }
-    actions   = ["s3:GetObject"]
+    actions = ["s3:GetObject"]
     resources = [
       "arn:aws:s3:::${var.aws_bucket}/*"
     ]
     condition {
-      test   = "IpAddress"
+      test = "IpAddress"
       values = [
         "173.245.48.0/20",
         "103.21.244.0/22",
@@ -76,11 +76,11 @@ resource "aws_s3_object" "profile_js" {
 }
 
 resource "aws_s3_object" "profile_assets" {
-  for_each     = fileset(path.module, "ak/img/assets/*")
-  source       = each.value
-  bucket       = aws_s3_bucket.profile.bucket
-  key          = trim(each.value, "ak/")
-  source_hash  = filemd5(each.value)
+  for_each    = fileset(path.module, "ak/img/assets/*")
+  source      = each.value
+  bucket      = aws_s3_bucket.profile.bucket
+  key         = trim(each.value, "ak/")
+  source_hash = filemd5(each.value)
   content_type = lookup(
     {
       "png"         = "image/png",
@@ -88,7 +88,7 @@ resource "aws_s3_object" "profile_assets" {
       "webmanifest" = "text/plain"
     },
     split(".", each.value)[1],
-    "text/plain")
+  "text/plain")
 }
 
 resource "aws_s3_object" "profile_gpg" {
@@ -102,22 +102,22 @@ resource "aws_s3_object" "profile_gpg" {
 }
 
 resource "aws_s3_object" "profile_src" {
-  for_each     = fileset(path.module, "ak/src/*")
-  source       = each.value
-  bucket       = aws_s3_bucket.profile.bucket
-  key          = trim(each.value, "ak/")
-  source_hash  = filemd5(each.value)
+  for_each    = fileset(path.module, "ak/src/*")
+  source      = each.value
+  bucket      = aws_s3_bucket.profile.bucket
+  key         = trim(each.value, "ak/")
+  source_hash = filemd5(each.value)
   content_type = lookup(
     {
       "js" = "text/javascript"
     },
     split(".", each.value)[1],
-    "text/plain")
+  "text/plain")
 }
 
 resource "aws_s3_bucket" "profile" {
   bucket = var.aws_bucket
-  tags   = {
+  tags = {
     deployed_with_terraform = true
     deployed_from_github    = true
     description             = "profile s3 bucket"
